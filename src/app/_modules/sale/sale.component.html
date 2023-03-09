@@ -1,0 +1,102 @@
+
+
+<div id="saleBase" class="baseContainer">
+
+    <header>
+        <span class="backBtn" (click)="location_.back()"><i class="fa-solid fa-angle-left"></i></span>
+        <img class="logo" src="./../assets/images/logo.bar.jumbo.svg" alt="Logo Jumbo">
+    </header>
+
+    <section class="console">
+
+        <div class="openSales">
+            <div *ngFor="let basket of objectToArray(productBaskets)" class="basket" (click)="selectedBasket = basket.id" [class.selected]="selectedBasket == basket.id">
+                <input type="text" #basketName [value]="basket.name" minlength="3" maxlength="25" (keyup)="false && changeBasketName(basketName.value)" [disabled]="selectedBasket != basket.id || true">
+                <span *ngIf="selectedBasket == basket.id && false" (click)="$event.stopPropagation(); popUp = { pop: 'delete-basket', extraData: basket }"><i class="fa-solid fa-trash-can"></i></span><!-- <i class="fa-regular fa-circle-xmark"></i> -->                
+            </div>
+            <!-- <div class="add" (click)="openNewBasket()"><i class="fa-solid fa-plus"></i></div> -->
+        </div>
+        
+        <form #addProductForm="ngForm" (submit)="addProductToBasket(addProductForm.value)" class="addProduct">
+            <!-- <div class="search" (click)="true"><i class="fa-solid fa-magnifying-glass"></i></div> -->
+            <input [(ngModel)]="searchKey" name="keyword" class="jum-inp" type="text" (focus)="loadProducts()" (blur)="hideProducts()" placeholder="Id/Nome Produto" autocomplete="none">
+            <p>{{ preSelectedProduct?.name || '---' }}</p>
+            <input ngModel class="jum-inp num" name="quantity" id="productQuantity" type="number" min="1" max="{{ !!preSelectedProduct ? preSelectedProduct.quantity - quantityCheck(preSelectedProduct.code) : 1 }}" placeholder="Quant:" [disabled]="!preSelectedProduct" autocomplete="none" required>
+            <button class="jum-btn" type="submit" [disabled]="!preSelectedProduct || addProductForm.invalid">Lançar</button>
+
+            <div *ngIf="!!StockProducts?.length" class="stockList">
+                <span *ngFor="let p of StockProducts" [class.unavailable]="p.quantity <= 0" [hidden]="!searchKey || (!p.name.toLowerCase().includes(searchKey.toLowerCase()) && !p.id?.toString()?.includes(searchKey.toLowerCase()))" (click)="setPreSelected(p)">{{ p.name }} <b>{{ p.quantity - quantityCheck(p.code) }}</b><sub>uni</sub></span>
+            </div>
+        </form>
+
+    </section>
+    <section class="list">
+
+        <div class="shopingList">
+            <div>
+                <p *ngFor="let product of productBaskets[selectedBasket]?.products">{{ product.name }} <span>{{ product.quantity }} <b>x</b> {{ product.price }}$</span><span>{{ product.price * product.quantity }}$</span></p>
+            </div>
+
+            <p class="total">Total <span>{{ calculateTotal(productBaskets[selectedBasket]?.products) }}$</span></p>
+        </div>
+
+        <button class="jum-btn red" (click)="openCloseCaixa()">Fechar Caixa</button>
+        <button class="jum-btn purp" (click)="popUp = { pop: 'finish-sale', extraData: { total: calculateTotal(productBaskets[selectedBasket]?.products) } }" [disabled]="!productBaskets[selectedBasket]?.products?.length">Concluir Venda</button>
+
+    </section>
+</div>
+
+<div *ngIf="!!popUp?.pop" class="popup">
+    <div class="box" [ngSwitch]="popUp?.pop">
+
+        <form *ngSwitchCase="'open-caixa'" #openCaixaForm="ngForm" (submit)="openNewCaixa(openCaixaForm.value)">
+            <h5>Abrir Caixa</h5>
+            <input [(ngModel)]="popUp?.extraData.finalAmount" type="tel" [mask]="'0*'" suffix="$" maxlength="10" name="startingAmount" placeholder="Valor em Caixa" class="jum-inp text-right" autocomplete="none" [disabled]="loading_" required>
+            <textarea ngModel name="notes" maxlength="1000" placeholder="Adicionar Notas" class="jum-inp" autocomplete="none"></textarea>
+
+            <a class="jum-btn half l oran" routerLink="/">Cancelar</a>
+            <button class="jum-btn half" type="submit" [class.doLoading]="loading_" [disabled]="openCaixaForm.invalid || loading_">Abrir</button>            
+        </form>
+
+        <form *ngSwitchCase="'close-caixa'" #closeCaixaForm="ngForm" (submit)="finishSaleDay(closeCaixaForm.value)">
+            <h5>Fechar Caixa</h5>
+            <input [value]="popUp?.extraData.startingAmount + '$'" type="tel" name="startingAmount" class="jum-inp text-right" readonly disabled>
+            <p>Valor total de vendas: <b>{{ popUp?.extraData.total || 0 }}$</b></p>
+            <input ngModel type="tel" [mask]="'0*'" suffix="$" maxlength="10" name="finalAmount" placeholder="Valor a Ficar em Caixa" class="jum-inp text-right" autocomplete="none" [disabled]="loading_" required>
+            <textarea  [(ngModel)]="popUp?.extraData.notes" name="notes" maxlength="1000" placeholder="Adicionar Notas" class="jum-inp" autocomplete="none"></textarea>
+
+            <button class="jum-btn half l oran" (click)="popUp = undefined" [disabled]="loading_">Cancelar</button>
+            <button class="jum-btn half" type="submit" [class.doLoading]="loading_" [disabled]="closeCaixaForm.invalid || loading_">Fechar</button>
+        </form>
+
+        <div *ngSwitchCase="'finish-sale'">
+            <h5>Concluir Venda?</h5>
+            <p>Valor total da venda: {{ popUp?.extraData.total }}$</p>
+            
+            <a class="jum-btn half l oran" (click)="popUp = undefined">Cancelar</a>
+            <a class="jum-btn half r" (click)="finishSale()">Concluir</a>
+        </div>
+
+        <div *ngSwitchCase="'no-stock'">
+            <h5>Não tem Produtos em Estoque<br>Por favor adicione Produtos</h5>
+            
+            <a class="jum-btn half l oran" routerLink="/">Cancelar</a>
+            <a class="jum-btn half r" routerLink="/stock">Ir para Stock</a>
+        </div>
+
+        <div *ngSwitchCase="'delete-basket'">
+            <h5>Está prestes a eliminar as compras de: {{ popUp?.extraData.name }}<br>Pretende eliminar?</h5>
+            
+            <button class="jum-btn half l oran" (click)="popUp = undefined">Não</button>
+            <button class="jum-btn half r" (click)="deleteBasketSelected()">Sim</button>
+        </div>
+
+        <div *ngSwitchCase="'finish-sales-first'">
+            <h5>Ainda tem Vendas em aberto</h5>
+            <p>Por favor conclua ou elemine as vendas!</p>
+            
+            <a class="jum-btn half" (click)="popUp = undefined">Voltar</a>
+        </div>
+
+    </div>
+</div>

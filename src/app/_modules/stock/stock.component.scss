@@ -1,0 +1,93 @@
+#stockBase {
+    padding-top: calc(58px + .5rem);
+    padding-bottom: 90px;
+    min-height: 100%;
+    position: relative;
+    
+    .table-box {
+        width: calc(100% + 2rem);
+        margin: 0 -1rem;
+        padding: 0 1rem;
+        overflow-x: auto;
+
+        table {
+            margin: 0 auto;
+            border-collapse: separate;
+            border-spacing: 0 .75rem;
+            width: 100%;
+
+            tr {
+                text-align: center;
+                padding: .5rem 0;
+
+                th {
+                    white-space: nowrap;
+                    padding: .5rem 1.5rem;
+
+                    &:nth-child(-n+2) { text-align: left; }
+                }
+
+                td {
+                    white-space: nowrap;
+                    padding: .5rem 1.5rem;
+                    font-weight: 400;
+                    background-color: rgba(217, 217, 217, 0.4);
+
+                    span {
+                        font-size: 1.5em;
+                        display: block;
+                        width: 35px;
+                        cursor: pointer;
+
+                        &.green { color: lime; }
+                        &.blue { color: dodgerblue; }
+                        &.red { color: crimson; }
+                    }
+
+                    &:nth-child(2) { text-transform: capitalize; }
+
+                    &:nth-child(-n+2) { text-align: left; }
+
+                    &:nth-child(n+3) {
+                        width: 30px;
+                        padding: .5rem .5rem;
+                    }
+
+                    &:first-child {
+                        border-radius: 30px 0 0 30px;
+                        font-weight: 700;
+                        width: 5ch;
+                    }
+
+                    &:last-child {
+                        border-radius: 0 30px 30px 0;
+                        padding-right: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    h3 {
+        font-weight: 600;
+        color: #bbb;
+        text-align: center;
+        margin: 5rem auto;
+    }
+
+    .addToStock {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        background-color: dodgerblue;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75em;
+        cursor: pointer;
+    }
+}

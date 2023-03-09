@@ -1,0 +1,226 @@
+@import './../../../assets/scss/prefabs';
+
+#saleBase {
+    height: 100%;
+    // padding-top: 1rem;
+    padding-top: calc(58px + .5rem);
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-flow: row-reverse;
+
+    section {
+        display: block;
+        height: 100%;
+        width: calc(100% - (300px + 1.5rem));
+
+        &.list {
+            .jum-btn:last-child { float: right; }
+        }
+        
+        &.console {
+            margin-left: 1.5rem;
+            width: 300px;
+            padding-bottom: 51px;
+        }
+
+        .shopingList {
+            height: calc(100% - 51px);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.03);
+            
+            &>div {
+                overflow-y: auto;
+                height: calc(100% - (1rem + 1em));
+            }
+
+            p {
+                display: flex;
+                padding: .35rem 0;
+
+                /* b {
+                    display: block;
+                    min-width: 3ch;
+                    margin-right: .25em;
+                    text-align: right;
+                } */
+
+                span {
+                    display: block;
+                    margin-left: auto;
+                    text-align: right;
+
+                    &:last-child {
+                        margin-left: 1rem;
+                        width: 7ch;
+                    }
+                }
+
+                &.total {
+                    padding-top: .75rem;
+                    border-top: 1px dashed #999;
+
+                    span {
+                        margin-left: auto;
+                        width: unset;
+                    }
+                }
+            }
+        }
+
+        .openSales {
+            height: calc(100% - (151px + 1rem));
+            margin-bottom: 1rem;
+            background-color: #fff;
+            border-radius: 20px;
+            overflow-y: auto;
+            padding: 5px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.03);
+
+            .basket {
+                display: flex;
+                align-items: center;
+                height: 35px;
+                padding: 5px 10px;
+                background-color: #f3f3f3;
+                margin-bottom: 5px;
+                border-radius: 18px;
+                cursor: pointer;
+                
+                // &.selected { background-color: #e9e9e9; }
+                &.selected {
+                    background-color: #c2c2c2;
+                    // pointer-events: none;
+                    cursor: initial;
+                    
+                    input { color: #fff; }
+                }
+
+                input {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    background: none;
+                    border: none;
+                    // pointer-events: none;
+                }
+
+                span {
+                    display: block;
+                    color: #505050;
+                    width: 20px;
+                    height: 20px;
+                    font-size: 20px;
+                    line-height: 1;
+                    cursor: pointer;
+                }
+            }
+
+            .add {
+                display: flex;
+                background-color: #5db57f;
+                color: #fff;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                border-radius: 15px;
+                font-size: 20px;
+                margin-left: auto;
+                cursor: pointer;
+            }
+        }
+
+        .addProduct {
+            position: relative;
+
+            .search {
+                position: absolute;
+                top: 6px;
+                right: 6px;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                font-size: 21px;
+                cursor: pointer;
+
+                & + .jum-inp { padding-right: 2.5rem; }
+
+                &:active { color: #999; }
+            }
+
+            p {
+                display: inline-block;
+                width: calc(100% - (7.5ch + 2rem));
+                padding: 0 1rem;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            .jum-inp.num {
+                text-align: right;
+                width: calc(7.5ch + 2rem);
+            }
+
+            .jum-btn {
+                display: block;
+                margin-left: auto;
+            }
+
+            .stockList {
+                position: absolute;
+                left: 0;
+                top: 42px;
+                width: 100%;
+                max-height: 109px;
+                overflow-y: auto;
+                border-radius: 15px;
+                background-color: #fefefe;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.03);
+                padding: 2px;
+
+                span {
+                    display: flex;
+                    align-items: center;
+                    // justify-content: space-between;
+                    padding: .34rem 1rem;
+                    cursor: pointer;
+
+                    b { margin-left: auto; }
+                    
+                    &:hover {
+                        background-color: #eee;
+                        border-radius: 15px;
+                    }
+
+                    &.unavailable {
+                        pointer-events: none;
+                        color: $orange;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: 725px) {
+        flex-wrap: wrap;
+        overflow-y: auto;
+        
+        section {
+            height: 75%;
+            width: 100%;
+        
+            &.console {
+                margin-left: 0;
+                width: 100%;
+                padding-bottom: 1.2rem;
+            }            
+        }
+    }
+}

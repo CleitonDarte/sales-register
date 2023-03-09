@@ -1,0 +1,79 @@
+<div id="stockBase" class="baseContainer">
+    
+    <header>
+        <span class="backBtn" (click)="location_.back()"><i class="fa-solid fa-angle-left"></i></span>
+        <img class="logo" src="./../assets/images/logo.bar.jumbo.svg" alt="Logo Jumbo">
+    </header>
+
+    <div class="table-box">        
+        <table *ngIf="!!StockProducts?.length">
+            <tr>
+                <th>Id</th>
+                <th>Produto</th>
+                <th>Custo</th>
+                <th>Preço</th>
+                <th>Lucro</th>
+                <th>Quantidade</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            
+            <tr *ngFor="let product of StockProducts">
+                <td>{{ product.id?.toString()?.padStart(3, '0') }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.cost }}$</td>
+                <td>{{ product.price }}$</td>
+                <td>{{ (((product.price/product.cost)*100)-100).toFixed(1) }}%</td>
+                <td>{{ product.quantity }}</td>
+                <td><span class="green" (click)="popUp = { pop: 'add-stock', extraData: product }" title="Adicionar Estoque"><i class="fa-solid fa-plus"></i></span></td>
+                <td><span class="blue" (click)="popUp = { pop: 'edit-product', extraData: product }" title="Editar Produto"><i class="fa-regular fa-pen-to-square"></i></span></td>
+                <td><span class="red" (click)="popUp = { pop: 'delete-product', extraData: product }" title="Apagar Produto"><i class="fa-regular fa-trash-can"></i></span></td>
+            </tr>
+        </table>
+        <h3 *ngIf="!!StockProducts && !StockProducts.length">Sem produtos em Estoque</h3>
+        
+        <div class="addToStock" (click)="popUp = { pop: 'new-product' }"><i class="fa-solid fa-plus"></i></div>
+    </div>
+</div>
+
+<div *ngIf="!!popUp?.pop" class="popup">
+    <div class="box" [ngSwitch]="popUp?.pop">
+
+        <form *ngSwitchCase="'new-product'" #newProductForm="ngForm" (submit)="newProduct(newProductForm.value)">
+            <h5>Adicionar novo Produto</h5>
+            <input ngModel type="text" name="name" minlength="3" maxlength="60" placeholder="Produto" class="jum-inp" autocomplete="none" required>
+            <input ngModel type="tel" [mask]="'0*'" suffix="$" maxlength="6" name="cost" placeholder="Custo" class="jum-inp half l text-right" autocomplete="none" [disabled]="loading_" required>
+            <input ngModel type="tel" [mask]="'0*'" suffix="$" maxlength="6" name="price" placeholder="Preço" class="jum-inp half text-right" autocomplete="none" [disabled]="loading_" required>
+
+            <button class="jum-btn half l oran" (click)="popUp = undefined" [disabled]="loading_">Cancelar</button>
+            <button class="jum-btn half" type="submit" [class.doLoading]="loading_" [disabled]="newProductForm.invalid || loading_">Adicionar</button>            
+        </form>
+
+        <form *ngSwitchCase="'edit-product'" #editProductForm="ngForm" (submit)="editProduct(editProductForm.value)">
+            <h5>Editar Produto</h5>
+            <input [(ngModel)]="popUp?.extraData.name" type="text" name="name" minlength="3" maxlength="60" placeholder="Produto" class="jum-inp" autocomplete="none" required>
+            <input [(ngModel)]="popUp?.extraData.cost" type="tel" [mask]="'0*'" suffix="$" maxlength="6" name="cost" placeholder="Custo" class="jum-inp half l text-right" autocomplete="none" [disabled]="loading_" required>
+            <input [(ngModel)]="popUp?.extraData.price" type="tel" [mask]="'0*'" suffix="$" maxlength="6" name="price" placeholder="Preço" class="jum-inp half text-right" autocomplete="none" [disabled]="loading_" required>
+
+            <button class="jum-btn half l oran" (click)="popUp = undefined" [disabled]="loading_">Cancelar</button>
+            <button class="jum-btn half" type="submit" [class.doLoading]="loading_" [disabled]="editProductForm.invalid || loading_">Submeter</button>            
+        </form>
+
+        <form *ngSwitchCase="'add-stock'" #addStockForm="ngForm" (submit)="addToStock(addStockForm.value)">
+            <h5>Adicionar Estoque de {{ popUp?.extraData?.name }}</h5>
+            <input ngModel type="number" maxlength="10" name="quantity" placeholder="Quantidade" class="jum-inp half l r text-right" autocomplete="none" [disabled]="loading_" required>
+
+            <button class="jum-btn half l oran" (click)="popUp = undefined" [disabled]="loading_">Cancelar</button>
+            <button class="jum-btn half" type="submit" [class.doLoading]="loading_" [disabled]="addStockForm.invalid || loading_">Adicionar</button>            
+        </form>
+
+        <div *ngSwitchCase="'delete-product'">
+            <h5>Quer realmente apagar o Producto, "{{ popUp?.extraData?.name }}"?</h5>
+
+            <button class="jum-btn half l red" (click)="popUp = undefined" [disabled]="loading_">Não</button>
+            <button class="jum-btn half" (click)="deleteProduct()" [class.doLoading]="loading_" [disabled]="loading_">Sim</button>  
+        </div>
+
+    </div>
+</div>

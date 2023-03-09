@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap');
+@import './assets/scss/prefabs';
+
+* { outline: unset !important; }
+
+html, body { width: 100%; height: 100%; }
+
+body {
+    font-family: 'Titillium Web', sans-serif;
+    background-color: #fafafa;
+}
+
+/*-- BOOTSTRAP FIXING --*/
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 { margin-bottom: 0; }
+
+a {
+    color: inherit;
+    &:hover { color: inherit; }
+}
+
+p {
+    margin-bottom: 0;
+    line-height: 1.2;
+}
+
+.h1, h1 { font-size: 2.5em; }
+.h2, h2 { font-size: 2em; }
+.h3, h3 { font-size: 1.75em; }
+.h4, h4 { font-size: 1.5em; }
+.h5, h5 { font-size: 1.25em; }
+.h6, h6 { font-size: 1em; }
+/*-- BOOTSTRAP FIXING --*/
+
+.baseContainer {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    max-width: 1250px;
+    padding: 0 1rem;
+}
+
+header {
+    width: 100%;
+    height: 58px;
+    padding-top: .5rem;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .backBtn {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        left: 1rem;
+        bottom: 7.5px;
+        cursor: pointer;
+        font-size: 1.75rem;
+        line-height: 0;
+    }
+
+    .logo {
+        display: block;
+        height: 50px;
+        margin: 0 auto;
+    }
+}
+
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    display: flex;
+    padding: 2rem 1.5rem;
+    overflow: auto;
+    background-color: rgba(220, 220, 220, 0.75);
+    backdrop-filter: blur(5px);
+
+    .box {
+        position: relative;
+        margin: auto;
+        width: 100%;
+        max-width: 375px;
+        background-color: #fafafa;
+        text-align: center;
+        border-radius: 20px;
+        overflow: hidden;
+        padding: 2rem 1rem;
+
+        .jum-btn-close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+
+        h5 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            white-space: pre-line;
+        }
+        
+        .jum-btn {
+            margin-top: 3rem;
+        }
+    }
+}
