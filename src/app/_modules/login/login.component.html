@@ -1,9 +1,0 @@
-<div id="loginBase" class="baseContainer">
-    <form #loginForm="ngForm" (submit)="doLogin(loginForm.value)">
-        <h3>Fazer Login</h3>
-        <input ngModel class="jum-inp" [class.invalid]="invalid_" (focus)="invalid_ = false" type="text" name="username" minlength="3" maxlength="50" placeholder="User Name" autocomplete="username" required>
-        <input ngModel class="jum-inp" [class.invalid]="invalid_" (focus)="invalid_ = false" type="password" name="password" placeholder="Password" minlength="6" maxlength="30" autocomplete="current-password" required>
-        <button type="submit" class="jum-btn" [disabled]="loginForm.invalid || invalid_">Continuar</button>
-        <p class="invalid" [class.show]="invalid_">Credenciais Inválidas</p>
-    </form>
-</div>
