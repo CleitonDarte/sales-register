@@ -14,6 +14,7 @@ export class AuthGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    // console.debug(this.authSvc.users())
     let storageUser = JSON.parse(localStorage.auth ? atob(localStorage.auth) : '{}');
     !this.authSvc.users().some(u => { return u.userId == storageUser.t }) && this.router.navigate(['login']);
     return this.authSvc.users().some(u => { return u.userId == storageUser.t });
