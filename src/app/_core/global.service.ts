@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class GlobalService {
 
-  public readonly logo: string = 'https://raw.githubusercontent.com/CleitonDarte/sales-register/gh-pages/assets/images/logo.bar.jumbo.svg';
+  public readonly logo: string = 'https://raw.githubusercontent.com/CleitonDarte/sales-register/master/src/assets/images/logo.bar.jumbo.svg';
 
   constructor() { }
 
