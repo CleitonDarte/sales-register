@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GlobalService } from 'src/app/_core/global.service';
 import { Product, Basket, Caixa, StorageDatabaseService } from 'src/app/_core/storage-database.service';
 
 @Component({
@@ -27,7 +28,8 @@ export class SaleComponent implements OnInit {
   constructor(
     public location_: Location,
     private storageSvc: StorageDatabaseService,
-    private router: Router
+    private router: Router,
+    public global: GlobalService
   ) { }
 
   ngOnInit(): void {

@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/_core/global.service';
 import { StorageDatabaseService, Product } from 'src/app/_core/storage-database.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class StockComponent implements OnInit {
 
   constructor(
     private storageSvc: StorageDatabaseService,
-    public location_: Location
+    public location_: Location,
+    public global: GlobalService
   ) {
     this.loadProducts();
   }
